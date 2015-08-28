@@ -48,6 +48,7 @@ if (Meteor.isClient) {
         name: playerNameVar,
         score: 0
       });
+      event.target.playerName.value = '';
     }
   });
 }
