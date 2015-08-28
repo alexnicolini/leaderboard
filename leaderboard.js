@@ -24,31 +24,40 @@ if (Meteor.isClient) {
   Template.leaderboard.events({
     'click .player': function () {
       var playerId = this._id;
+
       Session.set('selectedPlayer', playerId);
     },
     'click .increment': function() {
       var selectedPlayer = Session.get('selectedPlayer');
+
       PlayersList.update(selectedPlayer, { $inc: { score: 5 } });
     },
     'click .decrement': function() {
       var selectedPlayer = Session.get('selectedPlayer');
+
       PlayersList.update(selectedPlayer, { $inc: { score: -5 } });
     },
     'click .remove': function() {
       var selectedPlayer = Session.get('selectedPlayer');
-      PlayersList.remove(selectedPlayer);
+
+      if (confirm('Are You sure?')) {
+        PlayersList.remove(selectedPlayer);
+      }
     }
   });
 
   Template.addPlayerForm.events({
     'submit form': function (event) {
       event.preventDefault(); // evita o refresh da página
+
       var playerNameVar = event.target.playerName.value;
       var playerScore = event.target.playerScore.value;
+
       PlayersList.insert({
         name: playerNameVar,
         score: playerScore
       });
+      
       event.target.playerName.value = '';
       event.target.playerScore.value = '';
     }
