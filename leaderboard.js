@@ -44,11 +44,13 @@ if (Meteor.isClient) {
     'submit form': function (event) {
       event.preventDefault(); // evita o refresh da página
       var playerNameVar = event.target.playerName.value;
+      var playerScore = event.target.playerScore.value;
       PlayersList.insert({
         name: playerNameVar,
-        score: 0
+        score: playerScore
       });
       event.target.playerName.value = '';
+      event.target.playerScore.value = '';
     }
   });
 }
