@@ -6,7 +6,9 @@ if (Meteor.isClient) {
   Template.leaderboard.helpers({
     // helper functions go here
     'player': function () {
-      return PlayersList.find({}, { sort: { score: -1, name: 1 } });
+      var currentUserId = Meteor.userId();
+      return PlayersList.find({createdBy: currentUserId}, 
+        { sort: { score: -1, name: 1 } });
     },
     'selectedClass': function() {
       var playerId = this._id;
@@ -51,13 +53,16 @@ if (Meteor.isClient) {
       event.preventDefault(); // evita o refresh da página
 
       var playerNameVar = event.target.playerName.value;
-      var playerScore = event.target.playerScore.value;
+      var currentUserId = Meteor.userId();
+      var playerScore = parseInt(event.target.playerScore.value);
+
 
       PlayersList.insert({
         name: playerNameVar,
-        score: playerScore
+        score: playerScore,
+        createdBy: currentUserId
       });
-      
+
       event.target.playerName.value = '';
       event.target.playerScore.value = '';
     }
